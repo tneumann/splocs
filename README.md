@@ -19,6 +19,7 @@ For visualizing the components and animations, additionally
  - mayavi2
 
 In Ubuntu, these can be easily installed by
+
         >>> apt-get install python python-numpy python-scipy mayavi2
 
 Usage
