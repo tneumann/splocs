@@ -25,23 +25,8 @@ In Ubuntu, these can be easily installed by
 Usage
 -----
 
-Usage Example # 1 with already preprocessed data
- - Look at animation
-
-        >>> python view_animation.py data/face_lizhang_5000.h5
-
- - Find sparse components (takes some time)
-
-        >>> python sploc.py data/face_lizhang_5000.h5 /tmp/lizhang_splocs.h5
-
-    Notice that right now, you can only change the algorithm parameters in the file sploc.py (around line 30)
-
- - View sparse components
-
-        >>> python view_splocs.py /tmp/lizhang_splocs.h5
-
-
 The sploc algorithm requires the input files pre-processed and aligned, for own data, use the following process:
+
  - Convert and preprocess the mesh sequence (OFF and PLY import script available):
 
         >>> python import_off.py  "~/data/volker/*.off" /tmp/volker.h5
@@ -51,6 +36,20 @@ The sploc algorithm requires the input files pre-processed and aligned, for own 
  - Look at animation
 
         >>> python view_animation.py /tmp/volker_aligned.h5
+
+Here is an example of processing the data
+
+ - Find sparse components (takes some time)
+
+        >>> python sploc.py /tmp/volker_aligned.h5 /tmp/volker_splocs.h5
+
+    Notice that right now, you can only change the algorithm parameters in the file sploc.py (around line 30)
+
+ - View sparse components
+
+        >>> python view_splocs.py /tmp/volker_splocs.h5
+
+
 
 Limitations
 -----------
