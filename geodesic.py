@@ -57,7 +57,7 @@ def compute_mesh_laplacian(verts, tris):
     vertex_area = np.zeros(len(verts))
     ta3 = triangle_area / 3
     for i in xrange(tris.shape[1]):
-        bc = np.bincount(tris[:,i], ta3)
+        bc = np.bincount(tris[:,i].astype(int), ta3)
         vertex_area[:len(bc)] += bc
     VA = sparse.spdiags(vertex_area, 0, len(verts), len(verts))
     return L, VA
@@ -126,7 +126,9 @@ class GeodesicDistanceComputation(object):
             cot2 = 1 / np.tan(np.arccos(
                 (normalized(-e1) * normalized( e_opp)).sum(axis=1)))
             div_Xs += np.bincount(
-                vi1, 0.5 * (cot1 * (e1 * X).sum(axis=1) + cot2 * (e2 * X).sum(axis=1)), minlength=len(self._verts))
+                vi1.astype(int), 
+		0.5 * (cot1 * (e1 * X).sum(axis=1) + cot2 * (e2 * X).sum(axis=1)), 
+		minlength=len(self._verts))
         phi = self._factored_L(div_Xs).ravel()
         phi -= phi.min()
         return phi
