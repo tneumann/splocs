@@ -25,7 +25,7 @@ def compute_support_map(idx, geodesics, min_dist, max_dist):
     return (np.clip(phi, min_dist, max_dist) - min_dist) / (max_dist - min_dist)
 
 
-def main(input_animation_file, output_sploc_file):
+def main(input_animation_file, output_sploc_file, output_animation_file):
     rest_shape = "first" # which frame to use as rest-shape ("first" or "average")
     K = 50 # number of components
     smooth_min_dist = 0.1 # minimum geodesic distance for support map, d_min_in paper
@@ -149,13 +149,24 @@ def main(input_animation_file, output_sploc_file):
         for i, c in enumerate(C):
             f['comp%03d' % i] = c + Xmean
 
+    # save encoded animation including the weights
+    if output_animation_file:
+        with h5py.File(output_animation_file, 'w') as f:
+            f['verts'] = np.tensordot(W, C, (1, 0)) + Xmean[np.newaxis]
+            f['tris'] = tris
+            f['weights'] = W
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Find Sparse Localized Deformation Components')
     parser.add_argument('input_animation_file')
     parser.add_argument('output_sploc_file')
+    parser.add_argument('-a', '--output-anim', 
+                        help='Output animation file (will also save the component weights)')
     args = parser.parse_args()
-    main(args.input_animation_file, args.output_sploc_file)
+    main(args.input_animation_file, 
+         args.output_sploc_file, 
+         args.output_anim)
 
 
