@@ -5,9 +5,12 @@ from mayavi import mlab
 from tvtk.api import tvtk
 
 def main(hdf5_animation_file):
+    weights = None
     with h5py.File(hdf5_animation_file, 'r') as f:
         verts = f['verts'].value
         tris = f['tris'].value
+        if 'weights' in f:
+            weights = f['weights'].value
 
     pd = tvtk.PolyData(points=verts[0], polys=tris)
     normals = tvtk.PolyDataNormals(input=pd, splitting=False)
@@ -21,6 +24,9 @@ def main(hdf5_animation_file):
     @mlab.animate(delay=40, ui=False)
     def animation():
         for i in count():
+            if weights is not None:
+                w_str = ",".join(["%0.2f"] * weights.shape[1])
+                print ("Frame %d Weights = " + w_str) % tuple([i] + weights[i].tolist())
             frame = i % len(verts)
             pd.points = verts[frame]
             fig.scene.render()
