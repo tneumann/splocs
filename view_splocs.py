@@ -11,6 +11,7 @@ from mayavi.core.ui.mayavi_scene import MayaviScene
 from pyface.timer.api import Timer
 
 from util import veclen
+from inout import load_splocs
 
 
 def compute_normals(pd):
@@ -80,13 +81,7 @@ class Visualization(HasTraits):
     )
 
 def main(component_hdf5_file):
-    with h5py.File(component_hdf5_file, 'r') as f:
-        tris = f['tris'].value
-        Xmean = f['default'].value
-        names = sorted(list(set(f.keys()) - set(['tris', 'default'])))
-        components = np.array([
-            f[name].value - Xmean 
-            for name in names])
+    Xmean, tris, components, names = load_splocs(component_hdf5_file)
 
     visualization = Visualization(Xmean, tris, components)
     visualization.configure_traits()

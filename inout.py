@@ -129,4 +129,12 @@ def save_off(filename, vertices=None, faces=None):
                 fmt = " ".join(["%d"] * (len(face) + 1)) + "\n"
                 f.write(fmt % ((len(face),) + tuple(map(int, face))))
 
-
+def load_splocs(component_hdf5_file):
+    with h5py.File(component_hdf5_file, 'r') as f:
+        tris = f['tris'].value
+        Xmean = f['default'].value
+        names = sorted(list(set(f.keys()) - set(['tris', 'default'])))
+        components = np.array([
+            f[name].value - Xmean 
+            for name in names])
+    return Xmean, tris, components, names
