@@ -52,7 +52,7 @@ def preprocess_mesh_animation(verts, tris):
     # remove unconnected vertices
     ij = np.r_[np.c_[tris[:,0], tris[:,1]], 
                np.c_[tris[:,0], tris[:,2]], 
-               np.c_[tris[:,0], tris[:,2]]]
+               np.c_[tris[:,1], tris[:,2]]]
     G = csr_matrix((np.ones(len(ij)), ij.T), shape=(verts.shape[1], verts.shape[1]))
     n_components, labels = connected_components(G, directed=False)
     if n_components > 1:
