@@ -79,3 +79,7 @@ Bibtex entry:
     year = {2013}
 }
 ```
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/tneumann/splocs/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
