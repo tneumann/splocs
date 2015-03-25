@@ -26,8 +26,24 @@ def find_rbm_procrustes(frompts, topts):
         R *= -1
     T0 = np.eye(4)
     T0[:3,:3] = R
-    T0[:3, 3] = t1 - t0
+    T0[:3, 3] = t1 - np.dot(R, t0)
     return T0
+
+
+def test_find_rbm_procrustes():
+    for it in xrange(100):
+        R = np.linalg.qr(np.random.uniform(-1, 1, size=(3, 3)))[0]
+        if np.linalg.det(R) < 0:
+            R *= -1
+        t = np.random.uniform(-2, 2, size=3)
+        M = np.eye(4)
+        M[:3, :3] = R
+        M[:3,  3] = t
+        N = np.random.randint(3, 1000)
+        frompts = np.random.random((N, 3))
+        topts = transform(frompts, M)
+        M_pro = find_rbm_procrustes(frompts, topts)
+        np.testing.assert_almost_equal(M_pro, M)
 
 
 def main(input_hdf5_file, output_hdf5_file, rest_shape='first'):
