@@ -46,7 +46,7 @@ def test_find_rbm_procrustes():
         np.testing.assert_almost_equal(M_pro, M)
 
 
-def main(input_hdf5_file, output_hdf5_file, rest_shape='first'):
+def main(input_hdf5_file, output_hdf5_file):
     data = h5py.File(input_hdf5_file, 'r')
     verts = data['verts'].value
     tris = data['tris'].value
@@ -67,13 +67,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Align mesh animation rigidly')
     parser.add_argument('input_animation_file')
-    parser.add_argument(
-        '-r', '--restshape', 
-        help="Where to find the rest shape ('first' - in first frame, "
-             "'average' - average all vertices across animation to obtain rest shape)", 
-        choices=['first', 'average'],
-    )
     parser.add_argument('output_animation_file')
     args = parser.parse_args()
-    main(args.input_animation_file, args.output_animation_file, args.restshape)
+    main(args.input_animation_file, args.output_animation_file)
 
