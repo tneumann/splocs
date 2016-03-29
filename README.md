@@ -50,6 +50,20 @@ Here is an example of processing the data
         >>> python view_splocs.py /tmp/volker_splocs.h5
 
 
+Obtaining the datasets used in the paper
+----------------------------------------
+
+Here is how you can obtain the datasets that are used in the paper:
+
+**[Zhang et al.2004]** Facial performance capture data. You can get this here, as a PLY sequence: http://grail.cs.washington.edu/software-data/stfaces/index.html
+
+**[Valgaerts et al. 2012]** High-resolution facial performance capture data. You can request the data here: http://gvv.mpi-inf.mpg.de/projects/FaceCap/
+
+**[Beeler et al. 2011]** High-resolution facial performance capture data. The instructions how to get it are here: http://graphics.ethz.ch/publications/papers/paperBee11.php
+
+**[Hasler et al. 2009]** Full body scans in correspondence. Request here: http://gvvperfcapeva.mpi-inf.mpg.de/public/ScanDB/
+
+**[Neumann et al. 2013]** Captured shoulder and arm muscles. Please ask by mail, see the project page http://www.drematrix.de/publications/capture-and-statistical-modeling-of-arm-muscle-def/ This data is not in OFF/PLY Format and needs a separate pose normalization step that is not part of this source code distribution.
 
 Limitations
 -----------
