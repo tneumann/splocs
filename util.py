@@ -53,7 +53,7 @@ def filter_reindex(condition, target):
     [0, 1, 0, 1]
     """
     if condition.dtype != np.bool:
-        raise ValueError, "condition must be a binary array"
+        raise ValueError( "condition must be a binary array" )
     reindex = np.cumsum(condition) - 1
     return reindex[target]
 
