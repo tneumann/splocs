@@ -6,6 +6,7 @@ from traits.api import HasTraits, Range, Instance, Bool, Int, on_trait_change
 from traitsui.api import View, Item, HGroup, RangeEditor
 from tvtk.api import tvtk
 from tvtk.pyface.scene_editor import SceneEditor
+from tvtk.common import configure_input, configure_input_data
 from mayavi.tools.mlab_scene_model import MlabSceneModel
 from mayavi.core.ui.mayavi_scene import MayaviScene
 from pyface.timer.api import Timer
@@ -13,11 +14,6 @@ from pyface.timer.api import Timer
 from util import veclen
 from inout import load_splocs
 
-
-def compute_normals(pd):
-    n = tvtk.PolyDataNormals(input=pd, splitting=False)
-    n.update()
-    return n.output.point_data.normals
 
 class Visualization(HasTraits):
     component = Int(0)
@@ -37,9 +33,11 @@ class Visualization(HasTraits):
         self._max_component_index = len(components)
         self._Xmean = Xmean
         self.pd = tvtk.PolyData(points=Xmean, polys=tris)
-        self.pd.point_data.normals = compute_normals(self.pd) # compute normals once for rest-shape (faster)
-        self.actor = tvtk.Actor(mapper=tvtk.PolyDataMapper(
-            input=self.pd, immediate_mode_rendering=True))
+        self.normals = tvtk.PolyDataNormals(splitting=False)
+        configure_input_data(self.normals, self.pd)
+        mapper = tvtk.PolyDataMapper(immediate_mode_rendering=True)
+        self.actor = tvtk.Actor(mapper=mapper)
+        configure_input(self.actor.mapper, self.normals)
         self.actor.mapper.lookup_table = tvtk.LookupTable(
             hue_range = (0.45, 0.6),
             saturation_range = (0., 0.8),
@@ -69,7 +67,7 @@ class Visualization(HasTraits):
 
     view = View(
         Item('scene', editor=SceneEditor(scene_class=MayaviScene),
-             height=800, width=800, show_label=False),
+             height=600, width=800, show_label=False),
         HGroup(
             Item('component', editor=RangeEditor(
                 is_float=False, low=0, high_name='_max_component_index', mode='spinner')),

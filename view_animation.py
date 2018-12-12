@@ -3,6 +3,8 @@ import h5py
 from itertools import count
 from mayavi import mlab
 from tvtk.api import tvtk
+from tvtk.common import configure_input, configure_input_data
+
 
 def main(hdf5_animation_file):
     weights = None
@@ -13,8 +15,10 @@ def main(hdf5_animation_file):
             weights = f['weights'].value
 
     pd = tvtk.PolyData(points=verts[0], polys=tris)
-    normals = tvtk.PolyDataNormals(input=pd, splitting=False)
-    actor = tvtk.Actor(mapper=tvtk.PolyDataMapper(input=normals.output))
+    normals = tvtk.PolyDataNormals(splitting=False)
+    configure_input_data(normals, pd)
+    actor = tvtk.Actor(mapper=tvtk.PolyDataMapper())
+    configure_input(actor.mapper, normals)
     actor.property.set(edge_color=(0.5, 0.5, 0.5), ambient=0.0,
                        specular=0.15, specular_power=128., shading=True, diffuse=0.8)
 
